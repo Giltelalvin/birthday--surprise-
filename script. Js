@@ -1,0 +1,150 @@
+// Countdown to 13 July
+const countdown = document.getElementById("countdown");
+
+function updateCountdown() {
+    const now = new Date();
+    let year = now.getFullYear();
+
+    let birthday = new Date(year, 6, 13, 0, 0, 0); // July = 6
+
+    if (now > birthday) {
+        birthday = new Date(year + 1, 6, 13, 0, 0, 0);
+    }
+
+    const diff = birthday - now;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    countdown.innerHTML =
+        `${days} Days ${hours} Hours ${minutes} Minutes ${seconds} Seconds`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+
+// Love Letter
+const letter = document.getElementById("letter");
+
+document.getElementById("openLetter").onclick = () => {
+    letter.style.display = "flex";
+};
+
+document.getElementById("closeLetter").onclick = () => {
+    letter.style.display = "none";
+};
+
+
+// Floating Hearts
+function createHeart() {
+
+    const heart = document.createElement("div");
+
+    heart.classList.add("heart");
+
+    heart.innerHTML = "❤️";
+
+    heart.style.left = Math.random() * 100 + "vw";
+
+    heart.style.fontSize = (20 + Math.random() * 25) + "px";
+
+    heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+
+        heart.remove();
+
+    }, 7000);
+}
+
+setInterval(createHeart, 350);
+
+
+// Fireworks
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+const particles = [];
+
+function firework() {
+
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height / 2;
+
+    for (let i = 0; i < 60; i++) {
+
+        particles.push({
+
+            x,
+            y,
+            dx: (Math.random() - 0.5) * 8,
+            dy: (Math.random() - 0.5) * 8,
+            life: 100
+
+        });
+
+    }
+
+}
+
+function animate() {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach((p, index) => {
+
+        p.x += p.dx;
+        p.y += p.dy;
+        p.life--;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle =
+            `hsl(${Math.random() * 360},100%,60%)`;
+        ctx.fill();
+
+        if (p.life <= 0) {
+
+            particles.splice(index, 1);
+
+        }
+
+    });
+
+    requestAnimationFrame(animate);
+
+}
+
+animate();
+
+setInterval(firework, 2000);
+
+
+// Greeting Popup
+setTimeout(() => {
+
+    alert(
+`🎉 Happy Birthday Dorcas! ❤️
+
+May your day be filled with joy,
+love, laughter and unforgettable memories.
+
+With all my love,
+
+❤️ Alvin ❤️`
+    );
+
+}, 3000);
